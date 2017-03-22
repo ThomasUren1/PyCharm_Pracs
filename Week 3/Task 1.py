@@ -1,20 +1,3 @@
-# def main():
-#     no_months = float(input("How many months? "))
-#     income_monthly = []
-#     i = 0
-#     total = 0
-#     while no_months > 0:
-#         income = float(input("Enter the income for month #: "))
-#         income_monthly.append(income)
-#         no_months -= 1
-#         total += income
-#
-#     print(income_monthly)
-#     print(no_months)
-#     print(total)
-#
-# main()
-
 """
 CP1404/CP5632 Practical
 Starter code for cumulative total income program
