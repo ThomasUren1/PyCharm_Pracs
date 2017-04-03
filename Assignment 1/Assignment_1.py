@@ -2,6 +2,8 @@
 
 import csv
 
+global user
+
 def main():
     try:
         with open('name.csv') as namefile:
@@ -32,6 +34,7 @@ def menu():
 
     if user_input == "A":
         print('Adding books')
+        add_book()
     elif user_input == "B":
         print('Completing book!')
     elif user_input == "R":
@@ -45,5 +48,37 @@ def menu():
         print('TRY AGAIN!')
         menu()
 
+def add_book():
+    while True:
+            print('Please enter the name of the book you wish to add: ')
+            book_to_add = input()
+            if book_to_add != '':
+                break
+            else:
+                print('Invalid input! Try again.')
+
+    while True:
+            print('Please enter the name of the author of the book: ')
+            author_to_add = input()
+            if author_to_add != '':
+                break
+            else:
+                print('Invalid input! Try again.')
+
+    while True:
+            print('How many pages does the book have?')
+            pages_to_add = input()
+            if pages_to_add != '':
+                break
+            else:
+                print('Invalid input! Try again.')
+
+
 
 main()
+
+# def add_author():
+#     print('Please enter the name of the author of the book: ')
+#     author_to_add = input()
+#     if author_to_add != '':
+#         add_author()
