@@ -22,17 +22,23 @@ def main():
             filewriter.writerow([user])
         print('Welcome {}!'.format(user))
 
-    with open('book_collector.csv') as csvfile:
-        file = csv.reader(csvfile)
-        for row in file:
-            if row[-1] == "r":
-                required.append(row)
+    try:
+        with open('book_collector.csv') as csvfile:
+            file = csv.reader(csvfile)
+            for row in file:
+                if row[-1] == "r":
+                    required.append(row)
+    except FileNotFoundError:
+        a=[]
 
-    with open('book_collector.csv') as csvfile:
-        file = csv.reader(csvfile)
-        for row in file:
-            if row[-1] == "c":
-                completed.append(row)
+    try:
+        with open('book_collector.csv') as csvfile:
+            file = csv.reader(csvfile)
+            for row in file:
+                if row[-1] == "c":
+                    completed.append(row)
+    except FileNotFoundError:
+        a=[]
 
     menu()
 
@@ -54,10 +60,8 @@ def menu():
         print('Completing book!')
         finish_book()
     elif user_input == "R":
-        print('Books that are uncompleted:')
         require_books()
     elif user_input == "C":
-        print('All completed books:')
         completed_books()
     elif user_input == 'E':
         print('Thanks for using the book collector!')
@@ -100,27 +104,46 @@ def add_book():
 
 
 def require_books():
-    a=[]
-    for i in required:
-        for j in i:
-            a.append(j)
-        print("".join(a[0]),'by',"".join(a[1]),", Book has","".join(a[2]),"pages.")
+    total_pages = 0
+    total_books = 0
+    if required != []:
+        print('Books that are uncompleted:')
         a=[]
+        for i in required:
+            for j in i:
+                a.append(j)
+            print("".join(a[0]),'by',"".join(a[1]),", Book has","".join(a[2]),"pages.")
+            total_pages += float(a[2])
+            total_books += 1
+            a=[]
+        print('{} books with {} pages.'.format(total_books, total_pages))
+    else:
+        print('You have no books you require to read. Enter some more at the main menu!')
     menu()
 
 
 def completed_books():
-    a=[]
-    for i in completed:
-        for j in i:
-            a.append(j)
-        print("".join(a[0]),'by',"".join(a[1]),", Book has","".join(a[2]),"pages.")
+    total_pages = 0
+    total_books = 0
+    if completed != []:
+        print('All completed books:')
         a=[]
+        for i in completed:
+            for j in i:
+                a.append(j)
+            print("".join(a[0]),'by',"".join(a[1]),", Book has","".join(a[2]),"pages.")
+            total_pages += float(a[2])
+            total_books += 1
+            a=[]
+        print('{} books with {} pages.'.format(total_books, total_pages))
+    else:
+        print('You have no completed book on the list.')
     menu()
 
 
 def finish_book():
-    print('WORK IN DIS')
+    book_exists = 0
+    change_book = 0
     ### find book in list by name. send the book to the completed list with the r changed to a c.###
     print('What is the name of the book you wish to mark off?')
     marked_book = input()
@@ -131,12 +154,9 @@ def finish_book():
         print('Book does not exist in list. Please check the list and try again.')
     else:
         for i in required:
-            if marked_book in i:
-                change_book = 1
-            if change_book == 1:
-                i[3] = 'c'
-                completed.append(i)
-                required.remove(i)
+            i[3] = 'c'
+            completed.append(i)
+            required.remove(i)
 
     menu()
 
