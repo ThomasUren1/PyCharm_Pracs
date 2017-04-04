@@ -88,7 +88,8 @@ def add_book():
         print('Please enter the name of the author of the book: ')
         author_to_add = input()
 
-    while True:
+    valid_input = False
+    while not valid_input:
         print('How many pages does the book have?')
         try:
             pages_to_add = int(input())
@@ -97,7 +98,7 @@ def add_book():
                 continue
             if pages_to_add != '':
                 pages_to_add = str(pages_to_add)
-                break
+                valid_input = True
         except ValueError:
             print('Please enter a valid whole number.')
 
