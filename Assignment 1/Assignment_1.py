@@ -69,37 +69,40 @@ def menu():
     else:
         print("INVALID INPUT!")
         print('TRY AGAIN!')
+        print(required)
         menu()
 
 
 def add_book():
-    while True:
-            print('Please enter the name of the book you wish to add: ')
-            book_to_add = input()
-            if book_to_add != '':
-                break
-            else:
-                print('Invalid input! Try again.')
+    print('Please enter the name of the book you wish to add: ')
+    book_to_add = input()
+    while book_to_add == '':
+        print('Invalid input! Try again.')
+        print('Please enter the name of the book you wish to add: ')
+        book_to_add = input()
+
+    print('Please enter the name of the author of the book: ')
+    author_to_add = input()
+    while author_to_add == '':
+        print('Invalid input! Try again.')
+        print('Please enter the name of the author of the book: ')
+        author_to_add = input()
 
     while True:
-            print('Please enter the name of the author of the book: ')
-            author_to_add = input()
-            if author_to_add != '':
+        print('How many pages does the book have?')
+        try:
+            pages_to_add = int(input())
+            if pages_to_add < 0:
+                print('Please enter a positive whole number.')
+                continue
+            if pages_to_add != '':
+                pages_to_add = str(pages_to_add)
                 break
-            else:
-                print('Invalid input! Try again.')
-
-    while True:
-            print('How many pages does the book have?')
-            try:
-                pages_to_add = float(input())
-                if pages_to_add != '':
-                    pages_to_add = str(pages_to_add)
-                    break
-            except ValueError:
-                print('Please enter a number.')
+        except ValueError:
+            print('Please enter a valid whole number.')
 
     required.append([book_to_add,author_to_add,pages_to_add,'r'])
+    print('{} by {} added to the list!'.format(book_to_add,author_to_add))
     menu()
 
 
@@ -110,11 +113,11 @@ def require_books():
         print('Books that are uncompleted:')
         a=[]
         for i in required:
+            total_books += 1
             for j in i:
                 a.append(j)
-            print("".join(a[0]),'by',"".join(a[1]),", Book has","".join(a[2]),"pages.")
-            total_pages += float(a[2])
-            total_books += 1
+            print('{}.  {}  by  {}.     {} pages.'.format(total_books,a[0],a[1],a[2]))
+            total_pages += int(a[2])
             a=[]
         print('{} books with {} pages.'.format(total_books, total_pages))
     else:
@@ -129,11 +132,11 @@ def completed_books():
         print('All completed books:')
         a=[]
         for i in completed:
+            total_books += 1
             for j in i:
                 a.append(j)
-            print("".join(a[0]),'by',"".join(a[1]),", Book has","".join(a[2]),"pages.")
-            total_pages += float(a[2])
-            total_books += 1
+            print('{}.  {}  by  {}.     {} pages.'.format(total_books, a[0], a[1], a[2]))
+            total_pages += int(a[2])
             a=[]
         print('{} books with {} pages.'.format(total_books, total_pages))
     else:
@@ -145,18 +148,26 @@ def finish_book():
     book_exists = 0
     change_book = 0
     ### find book in list by name. send the book to the completed list with the r changed to a c.###
-    print('What is the name of the book you wish to mark off?')
-    marked_book = input()
-    for i in required:
-        if marked_book in i:
+    print('What is the number of the book you wish to mark off?')
+    try:
+        marked_book = int(input())
+        marked_book -= 1
+        mark_off = required[marked_book]
+    except ValueError:
+        print('Please enter a valid number.')
+    try:
+        if mark_off in required:
             book_exists = 1
-    if book_exists != 1:
-        print('Book does not exist in list. Please check the list and try again.')
-    else:
-        for i in required:
-            i[3] = 'c'
-            completed.append(i)
-            required.remove(i)
+        if book_exists != 1:
+            print('Book does not exist in required list. Please check the list and try again.')
+        else:
+            for i in required:
+                i[3] = 'c'
+                completed.append(i)
+                required.remove(i)
+                print('{} was marked off!'.format(i[0]))
+    except IndexError:
+        print('Invalid input. Check the list and try again.')
 
     menu()
 
